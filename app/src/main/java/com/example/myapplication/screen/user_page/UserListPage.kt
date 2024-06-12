@@ -30,7 +30,7 @@ import com.example.myapplication.widgets.RowLayoutLazyColumn
 import com.example.myapplication.widgets.RowLayoutProps
 
 @Composable
-fun UsersListPage(userViewModel: UserViewModel = UserViewModel()) {
+fun UsersListPage(userViewModel: UserViewModel) {
     val users by userViewModel.users.observeAsState();
     val isLoading by userViewModel.isLoading.observeAsState(false);
     val isError by userViewModel.isError.observeAsState(false);

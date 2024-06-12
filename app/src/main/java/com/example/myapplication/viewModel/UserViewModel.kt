@@ -1,23 +1,14 @@
 package com.example.myapplication.viewModel
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myapplication.api.getUsers
 import com.example.myapplication.model.UserModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import com.example.myapplication.repository.UserRepository
 import kotlinx.coroutines.launch
-import kotlin.concurrent.thread
 
-class UserViewModel : ViewModel() {
+public class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
 
     private var _users = MutableLiveData<List<UserModel>>(emptyList());
     private var _isLoading = MutableLiveData<Boolean>(false);
@@ -31,16 +22,14 @@ class UserViewModel : ViewModel() {
         get() = _isError
     val error: LiveData<String>
         get() = _error
-
     init {
         viewModelScope.launch {
-            getUsers(_users, _isLoading, _isError, _error)
+            userRepository.getUsers(_users, _isLoading, _isError, _error)
         }
     }
-
     fun fetchUsers() {
         viewModelScope.launch {
-            getUsers(_users, _isLoading, _isError, _error)
+            userRepository.getUsers(_users, _isLoading, _isError, _error)
         }
     }
 }

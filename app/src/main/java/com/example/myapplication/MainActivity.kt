@@ -80,6 +80,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.navigation.navArgument
+import com.example.myapplication.routes.Route
 import com.example.myapplication.screen.user_page.UserEditPageScaffold
 import com.example.myapplication.screen.user_page.UserPageScaffold
 import com.example.myapplication.ui.theme.MyApplicationTheme
@@ -110,18 +111,21 @@ fun MyApp(modifier: Modifier = Modifier) {
 //    }
 //    NavHost(navController = navController, graph = navGraph)
     val navController = rememberNavController()
-    NavHost(navController, startDestination = "users") {
-        composable("users") { UserPageScaffold(modifier, navController) }
+    NavHost(navController, startDestination = Route.Companion.UserListRoute.route!!) {
+        composable(Route.Companion.UserListRoute.route) { UserPageScaffold(modifier, navController) }
         composable(
-            "user_edit/{userId}",
-            arguments = listOf(navArgument("userId") { type = NavType.StringType })
+            Route.Companion.UserEditRoute.route!!,
+            arguments = listOf(navArgument(Route.Companion.UserEditRoute.argument!!) { type = NavType.StringType })
         ) { backStackEntry ->
             UserEditPageScaffold(
                 modifier,
                 navController,
-                backStackEntry.arguments?.getString("userId").toString()
+                backStackEntry.arguments?.getString(Route.Companion.UserEditRoute.argument).toString()
             )
         }
+        composable(Route.Companion.SettingsRoute.route!!) { UserPageScaffold(modifier, navController) }
+        composable(Route.Companion.EmailRoute.route!!) { UserPageScaffold(modifier, navController) }
+        composable(Route.Companion.PhoneRoute.route!!) { UserPageScaffold(modifier, navController) }
     }
 }
 

@@ -29,6 +29,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.myapplication.repository.UserRepository
+import com.example.myapplication.service.UserApi
+import com.example.myapplication.viewModel.UserViewModel
 import com.example.myapplication.widgets.AppDrawerConfig
 import com.example.myapplication.widgets.AppDrawerItem
 import com.example.myapplication.widgets.BasicScaffold
@@ -166,7 +169,8 @@ fun UserPageScaffold(modifier: Modifier, navController: NavController) {
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                UsersListPage()
+                val userViewModel: UserViewModel= UserViewModel(UserRepository(UserApi.getInstance()))
+                UsersListPage(userViewModel)
             }
         }
     }
