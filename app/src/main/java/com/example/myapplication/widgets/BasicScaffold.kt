@@ -14,6 +14,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -47,6 +49,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.myapplication.routes.Route
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -54,17 +58,21 @@ data class AppDrawerItem(
     val navigationItemIcon: (@Composable ()->Unit)?,
     val navigationItemLabel: String?,
     val navigationItemSelected: Boolean?,
+    val path: String?,
     val onNavigationItemClick: (() -> Unit)?
 )
 
 data class AppDrawerConfig(
-    val navigationItems: List<AppDrawerItem>?,
-    val navigationHeader: (@Composable () -> Unit)?
+    val navigationItems: List<AppDrawerItem>?=null,
+    val navigationHeaderTitle: String?=null,
+    val navigationHeader: (@Composable () -> Unit)?=null,
+    val allowDefaultNavigationItems: Boolean?=true
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BasicScaffold(
+    navController: NavController,
     topAppBarContainerColor: Color?,
     topAppBarTitleContentColor: Color?,
 
@@ -118,20 +126,41 @@ fun BasicScaffold(
                 modifier = Modifier.width(300.dp),
                 drawerShape = CutCornerShape(0.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                        .background(MaterialTheme.colorScheme.surface)
-                ) {
-                    Column(
+                if (appDrawerConfig?.navigationHeaderTitle.isNullOrBlank()){
+                    Row(
                         modifier = Modifier
-                            .fillMaxHeight()
-                            .fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                            .fillMaxWidth()
+                            .height(50.dp),
+                        verticalAlignment = Alignment.Top
                     ) {
-                        appDrawerConfig?.navigationHeader!!()
+                        Column(modifier= Modifier
+                            .width(50.dp)
+                            .fillMaxHeight()
+                            .padding(start = 10.dp, end = 10.dp),
+                            horizontalAlignment = Alignment.Start) {
+                            Row(modifier= Modifier
+                                .fillMaxHeight()
+                                .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                                Icon(imageVector = Icons.Filled.Menu, contentDescription = "menu",modifier=Modifier.align(Alignment.CenterVertically))
+                            }
+                        }
+                        Column(modifier= Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(),
+                            horizontalAlignment = Alignment.Start) {
+                            Row(modifier=Modifier.fillMaxWidth().fillMaxHeight(), verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    text = appDrawerConfig?.navigationHeaderTitle!!,
+                                    modifier = Modifier
+                                        .padding(16.dp)
+                                        .align(Alignment.CenterVertically),
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                        }
                     }
+                } else {
+                    appDrawerConfig?.navigationHeader!!()
                 }
                 Divider()
                 Column(modifier= Modifier
@@ -139,18 +168,38 @@ fun BasicScaffold(
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState())
                 ) {
-                    appDrawerConfig?.navigationItems?.map { appDrawerItem ->
-                        NavigationDrawerItem(
-                            icon = appDrawerItem.navigationItemIcon,
-                            label = { Text(text = appDrawerItem.navigationItemLabel!!) },
-                            selected = appDrawerItem.navigationItemSelected!!,
-                            onClick = {
-                                scope.launch {
-                                    drawerState.close()
-                                }
-                            },
+                    if (appDrawerConfig?.allowDefaultNavigationItems==false && appDrawerConfig.navigationItems?.size!!>0){
+                        appDrawerConfig.navigationItems.map { appDrawerItem ->
+                            NavigationDrawerItem(
+                                icon = appDrawerItem.navigationItemIcon,
+                                label = { Text(text = appDrawerItem.navigationItemLabel!!) },
+                                selected = appDrawerItem.navigationItemSelected!!,
+                                onClick = {
+                                    scope.launch {
+                                        drawerState.close()
+                                    }
+                                    navController.navigate(appDrawerItem.path!!)
+                                    appDrawerItem.onNavigationItemClick?.invoke()
+                                },
 //                            modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-                        )
+                            )
+                        }
+                    }
+                    if (appDrawerConfig?.allowDefaultNavigationItems!!){
+                        Route.Companion.Screens.filter { screen->screen.hasNavigationMenu!! }.map { screen->
+                            NavigationDrawerItem(
+                                icon = {screen.icon},
+                                label = { Text(text = screen.label!!) },
+                                selected = false,
+                                onClick = {
+                                    scope.launch {
+                                        drawerState.close()
+                                    }
+                                    navController.navigate(screen.path!!)
+                                },
+//                            modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                            )
+                        }
                     }
                 }
             }

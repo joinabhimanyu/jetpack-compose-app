@@ -3,9 +3,11 @@ package com.example.myapplication.screen.user_page
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Build
@@ -41,7 +43,75 @@ import com.example.myapplication.widgets.DropDownOptions
 @Composable
 fun UserPageScaffold(modifier: Modifier, navController: NavController) {
 
+    val bottomSheetOptions=listOf(
+        BottomSheetOptions(
+            iconTint = Color.Black,
+            imageVector = Icons.Filled.Email,
+            contentDescription = "Gmail",
+            optionText = "Share with Gmail",
+            onOptionClick = { /*TODO*/ }
+        ),
+        BottomSheetOptions(
+            iconTint = Color.Black,
+            imageVector = Icons.Filled.Share,
+            contentDescription = "whatsapp",
+            optionText = "Share with Whatsapp",
+            onOptionClick = { /*TODO*/ }
+        ),
+        BottomSheetOptions(
+            iconTint = Color.Black,
+            imageVector = Icons.Filled.Settings,
+            contentDescription = "settings",
+            optionText = "Manage settings",
+            onOptionClick = { /*TODO*/ }
+        ),
+        BottomSheetOptions(
+            iconTint = Color.Black,
+            imageVector = Icons.Filled.Build,
+            contentDescription = "about",
+            optionText = "About this application",
+            onOptionClick = { /*TODO*/ }
+        ),
+        BottomSheetOptions(
+            iconTint = Color.Black,
+            imageVector = Icons.Filled.Edit,
+            contentDescription = "report",
+            optionText = "Report this",
+            onOptionClick = { /*TODO*/ }
+        ),
+        BottomSheetOptions(
+            iconTint = Color.Black,
+            imageVector = Icons.Filled.Info,
+            contentDescription = "feedback",
+            optionText = "Send Feedback",
+            onOptionClick = { /*TODO*/ }
+        )
+    );
+    val dropDownOptions=listOf(
+        DropDownOptions(
+            "Menu 1",
+            contentDescription = "Call",
+            leadingIconImageVector = Icons.Filled.Home,
+            onClickOption = { /*TODO*/ }
+        ), DropDownOptions(
+            "Menu 2",
+            contentDescription = "Call",
+            leadingIconImageVector = Icons.Filled.Settings,
+            onClickOption = { /*TODO*/ }
+        ), DropDownOptions(
+            "Menu 3",
+            contentDescription = "Call",
+            leadingIconImageVector = Icons.Filled.Info,
+            onClickOption = { /*TODO*/ }
+        ), DropDownOptions(
+            "Menu 4",
+            contentDescription = "Call",
+            leadingIconImageVector = Icons.Filled.Build,
+            onClickOption = { /*TODO*/ }
+        ));
+
     BasicScaffold(
+        navController=navController,
         topAppBarContainerColor = MaterialTheme.colorScheme.primary,
         topAppBarTitleContentColor = MaterialTheme.colorScheme.background,
         navigationButtonIconTint = Color.White,
@@ -55,109 +125,16 @@ fun UserPageScaffold(modifier: Modifier, navController: NavController) {
         actionButtonOnClick = { changeShowBottomSheet -> /*TODO*/ },
         wantActionButtonDropdown = true,
         onDismissRequestDropdown = { changeShowBottomSheet -> /*TODO*/ },
-        dropDownOptions = listOf(
-            DropDownOptions(
-                "Menu 1",
-                contentDescription = "Call",
-                leadingIconImageVector = Icons.Filled.Home,
-                onClickOption = { /*TODO*/ }
-            ), DropDownOptions(
-                "Menu 2",
-                contentDescription = "Call",
-                leadingIconImageVector = Icons.Filled.Settings,
-                onClickOption = { /*TODO*/ }
-            ), DropDownOptions(
-                "Menu 3",
-                contentDescription = "Call",
-                leadingIconImageVector = Icons.Filled.Info,
-                onClickOption = { /*TODO*/ }
-            ), DropDownOptions(
-                "Menu 4",
-                contentDescription = "Call",
-                leadingIconImageVector = Icons.Filled.Build,
-                onClickOption = { /*TODO*/ }
-            )),
+        dropDownOptions = dropDownOptions,
         floatingActionButtonIconTint = Color.Black,
         floatingActionButtonImageVector = Icons.Filled.Add,
         floatingActionButtonDescription = "Add",
         onFloatingActionButtonClick = { changeShowBottomSheet -> changeShowBottomSheet.invoke(true) },
         bottomSheetHeader = "More Options...",
-        bottomSheetOptions = listOf(
-            BottomSheetOptions(
-                iconTint = Color.Black,
-                imageVector = Icons.Filled.Email,
-                contentDescription = "Gmail",
-                optionText = "Share with Gmail",
-                onOptionClick = { /*TODO*/ }
-            ),
-            BottomSheetOptions(
-                iconTint = Color.Black,
-                imageVector = Icons.Filled.Share,
-                contentDescription = "whatsapp",
-                optionText = "Share with Whatsapp",
-                onOptionClick = { /*TODO*/ }
-            ),
-            BottomSheetOptions(
-                iconTint = Color.Black,
-                imageVector = Icons.Filled.Settings,
-                contentDescription = "settings",
-                optionText = "Manage settings",
-                onOptionClick = { /*TODO*/ }
-            ),
-            BottomSheetOptions(
-                iconTint = Color.Black,
-                imageVector = Icons.Filled.Build,
-                contentDescription = "about",
-                optionText = "About this application",
-                onOptionClick = { /*TODO*/ }
-            ),
-            BottomSheetOptions(
-                iconTint = Color.Black,
-                imageVector = Icons.Filled.Edit,
-                contentDescription = "report",
-                optionText = "Report this",
-                onOptionClick = { /*TODO*/ }
-            ),
-            BottomSheetOptions(
-                iconTint = Color.Black,
-                imageVector = Icons.Filled.Info,
-                contentDescription = "feedback",
-                optionText = "Send Feedback",
-                onOptionClick = { /*TODO*/ }
-            )
-        ),
+        bottomSheetOptions = bottomSheetOptions,
         bottomSheetContent = null,
         appDrawerConfig = AppDrawerConfig(
-            navigationHeader = {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Drawer title",
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .align(Alignment.CenterVertically),
-                        textAlign = TextAlign.Center
-                    )
-                }
-            },
-            navigationItems = listOf(
-                AppDrawerItem(navigationItemIcon = { Icon(imageVector = Icons.Filled.Home, contentDescription = "item 1")}
-                    ,navigationItemLabel = "Item 1", navigationItemSelected = false,
-                    onNavigationItemClick = { /*TODO*/ }),
-                AppDrawerItem(navigationItemIcon = { Icon(imageVector = Icons.Filled.Settings, contentDescription = "item 2")}
-                    ,navigationItemLabel = "Item 2", navigationItemSelected = false,
-                    onNavigationItemClick = { /*TODO*/ }),
-                AppDrawerItem(navigationItemIcon = { Icon(imageVector = Icons.Filled.Email, contentDescription = "item 3")}
-                    ,navigationItemLabel = "Item 3", navigationItemSelected = false,
-                    onNavigationItemClick = { /*TODO*/ }),
-                AppDrawerItem(navigationItemIcon = { Icon(imageVector = Icons.Filled.Phone, contentDescription = "item 4")}
-                    ,navigationItemLabel = "Item 4", navigationItemSelected = false,
-                    onNavigationItemClick = { /*TODO*/ })
-            )
+            navigationHeaderTitle = "Drawer Title",
         )
     ) { contentPadding, showBottomSheet, changeShowBottomSheet, scope, snackBarHostState, drawerState ->
         Surface(

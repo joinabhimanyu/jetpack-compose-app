@@ -103,32 +103,34 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MyApp(modifier: Modifier = Modifier) {
 
-//    val navController=rememberNavController();
-//    val navGraph by remember(navController) {
-//        navController.createGraph(startDestination = "mainApp") {
-//            composable("mainApp"){ UserPageScaffold(modifier = modifier,navController) }
-//        }
-//    }
-//    NavHost(navController = navController, graph = navGraph)
     val navController = rememberNavController()
-    NavHost(navController, startDestination = Route.Companion.UserListRoute.route!!) {
-        composable(Route.Companion.UserListRoute.route) { UserPageScaffold(modifier, navController) }
-        composable(
-            Route.Companion.UserEditRoute.route!!,
-            arguments = listOf(navArgument(Route.Companion.UserEditRoute.argument!!) { type = NavType.StringType })
-        ) { backStackEntry ->
-            UserEditPageScaffold(
-                modifier,
-                navController,
-                backStackEntry.arguments?.getString(Route.Companion.UserEditRoute.argument).toString()
-            )
+    NavHost(navController, startDestination = Route.Companion.UserListRoute.path!!) {
+        Route.Screens.map { screen ->
+            if (screen.argument.isNullOrBlank()) {
+                composable(
+                    screen.path!!,
+                    arguments = listOf(navArgument(screen.argument!!) {
+                        type = NavType.StringType
+                    })
+                ) { backStackEntry ->
+                    screen.composable!!(
+                        modifier,
+                        navController,
+                        backStackEntry.arguments?.getString(screen.argument).toString()
+                    )
+                }
+            } else {
+                composable(screen.path!!) {
+                    screen.composable!!(
+                        modifier,
+                        navController,
+                        null
+                    )
+                }
+            }
         }
-        composable(Route.Companion.SettingsRoute.route!!) { UserPageScaffold(modifier, navController) }
-        composable(Route.Companion.EmailRoute.route!!) { UserPageScaffold(modifier, navController) }
-        composable(Route.Companion.PhoneRoute.route!!) { UserPageScaffold(modifier, navController) }
     }
 }
-
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
