@@ -110,7 +110,7 @@ fun MyApp(modifier: Modifier = Modifier) {
                 composable(
                     screen.path!!,
                     arguments = listOf(navArgument(screen.argument!!) {
-                        type = NavType.StringType
+                        type = screen.argumentType!!
                     })
                 ) { backStackEntry ->
                     screen.composable!!(

@@ -111,6 +111,7 @@ fun UserPageScaffold(modifier: Modifier, navController: NavController) {
         ));
 
     BasicScaffold(
+        modifier = modifier,
         navController=navController,
         topAppBarContainerColor = MaterialTheme.colorScheme.primary,
         topAppBarTitleContentColor = MaterialTheme.colorScheme.background,
@@ -136,19 +137,8 @@ fun UserPageScaffold(modifier: Modifier, navController: NavController) {
         appDrawerConfig = AppDrawerConfig(
             navigationHeaderTitle = "Drawer Title",
         )
-    ) { contentPadding, showBottomSheet, changeShowBottomSheet, scope, snackBarHostState, drawerState ->
-        Surface(
-            modifier = modifier.padding(contentPadding),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            Column(
-                modifier = modifier,
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                val userViewModel: UserViewModel= UserViewModel(UserRepository(UserApi.getInstance()))
-                UsersListPage(userViewModel)
-            }
-        }
+    ) { showBottomSheet, changeShowBottomSheet, scope, snackBarHostState, drawerState ->
+        val userViewModel: UserViewModel= UserViewModel(UserRepository(UserApi.getInstance()))
+        UsersListPage(userViewModel)
     }
 }

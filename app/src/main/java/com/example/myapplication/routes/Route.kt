@@ -24,6 +24,7 @@ public sealed class Route(
     val icon: ImageVector? = null,
     val composable: (@Composable (modifier: Modifier, navController: NavController, args: String?) -> Unit)? = null,
     val argument: String? = null,
+    val argumentType: NavType<*>?=null,
     val hasNavigationMenu: Boolean? = true,
 ) {
     companion object {
@@ -56,6 +57,7 @@ public sealed class Route(
                 )
             },
             argument = "userId",
+            argumentType = NavType.StringType,
             hasNavigationMenu = false
         );
         data object SettingsRoute : Route("settings", "Settings", Icons.Filled.Settings,

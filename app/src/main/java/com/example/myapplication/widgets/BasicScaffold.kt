@@ -1,6 +1,7 @@
 package com.example.myapplication.widgets
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -31,6 +32,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberBottomSheetScaffoldState
@@ -55,7 +57,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 data class AppDrawerItem(
-    val navigationItemIcon: (@Composable ()->Unit)?,
+    val navigationItemIcon: (@Composable () -> Unit)?,
     val navigationItemLabel: String?,
     val navigationItemSelected: Boolean?,
     val path: String?,
@@ -63,15 +65,16 @@ data class AppDrawerItem(
 )
 
 data class AppDrawerConfig(
-    val navigationItems: List<AppDrawerItem>?=null,
-    val navigationHeaderTitle: String?=null,
-    val navigationHeader: (@Composable () -> Unit)?=null,
-    val allowDefaultNavigationItems: Boolean?=true
+    val navigationItems: List<AppDrawerItem>? = null,
+    val navigationHeaderTitle: String? = null,
+    val navigationHeader: (@Composable () -> Unit)? = null,
+    val allowDefaultNavigationItems: Boolean? = true
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BasicScaffold(
+    modifier: Modifier,
     navController: NavController,
     topAppBarContainerColor: Color?,
     topAppBarTitleContentColor: Color?,
@@ -102,7 +105,7 @@ fun BasicScaffold(
     appDrawerConfig: AppDrawerConfig?,
 
     content: @Composable() (
-        contentPadding: PaddingValues, showBottomSheet: Boolean,
+        showBottomSheet: Boolean,
         changeShowBottomSheet: (args: Boolean) -> Unit,
         scope: CoroutineScope,
         snackBarHostState: SnackbarHostState,
@@ -126,29 +129,44 @@ fun BasicScaffold(
                 modifier = Modifier.width(300.dp),
                 drawerShape = CutCornerShape(0.dp)
             ) {
-                if (appDrawerConfig?.navigationHeaderTitle.isNullOrBlank()){
+                if (appDrawerConfig?.navigationHeaderTitle.isNullOrBlank()) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp),
                         verticalAlignment = Alignment.Top
                     ) {
-                        Column(modifier= Modifier
-                            .width(50.dp)
-                            .fillMaxHeight()
-                            .padding(start = 10.dp, end = 10.dp),
-                            horizontalAlignment = Alignment.Start) {
-                            Row(modifier= Modifier
+                        Column(
+                            modifier = Modifier
+                                .width(50.dp)
                                 .fillMaxHeight()
-                                .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                                Icon(imageVector = Icons.Filled.Menu, contentDescription = "menu",modifier=Modifier.align(Alignment.CenterVertically))
+                                .padding(start = 10.dp, end = 10.dp),
+                            horizontalAlignment = Alignment.Start
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxHeight()
+                                    .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Menu,
+                                    contentDescription = "menu",
+                                    modifier = Modifier.align(Alignment.CenterVertically)
+                                )
                             }
                         }
-                        Column(modifier= Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight(),
-                            horizontalAlignment = Alignment.Start) {
-                            Row(modifier=Modifier.fillMaxWidth().fillMaxHeight(), verticalAlignment = Alignment.CenterVertically) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight(),
+                            horizontalAlignment = Alignment.Start
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxHeight(),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
                                 Text(
                                     text = appDrawerConfig?.navigationHeaderTitle!!,
                                     modifier = Modifier
@@ -163,12 +181,13 @@ fun BasicScaffold(
                     appDrawerConfig?.navigationHeader!!()
                 }
                 Divider()
-                Column(modifier= Modifier
-                    .fillMaxHeight()
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
+                Column(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
                 ) {
-                    if (appDrawerConfig?.allowDefaultNavigationItems==false && appDrawerConfig.navigationItems?.size!!>0){
+                    if (appDrawerConfig?.allowDefaultNavigationItems == false && appDrawerConfig.navigationItems?.size!! > 0) {
                         appDrawerConfig.navigationItems.map { appDrawerItem ->
                             NavigationDrawerItem(
                                 icon = appDrawerItem.navigationItemIcon,
@@ -185,21 +204,22 @@ fun BasicScaffold(
                             )
                         }
                     }
-                    if (appDrawerConfig?.allowDefaultNavigationItems!!){
-                        Route.Companion.Screens.filter { screen->screen.hasNavigationMenu!! }.map { screen->
-                            NavigationDrawerItem(
-                                icon = {screen.icon},
-                                label = { Text(text = screen.label!!) },
-                                selected = false,
-                                onClick = {
-                                    scope.launch {
-                                        drawerState.close()
-                                    }
-                                    navController.navigate(screen.path!!)
-                                },
+                    if (appDrawerConfig?.allowDefaultNavigationItems!!) {
+                        Route.Screens.filter { screen -> screen.hasNavigationMenu!! }
+                            .map { screen ->
+                                NavigationDrawerItem(
+                                    icon = { screen.icon },
+                                    label = { Text(text = screen.label!!) },
+                                    selected = false,
+                                    onClick = {
+                                        scope.launch {
+                                            drawerState.close()
+                                        }
+                                        navController.navigate(screen.path!!)
+                                    },
 //                            modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-                            )
-                        }
+                                )
+                            }
                     }
                 }
             }
@@ -280,15 +300,25 @@ fun BasicScaffold(
                         bottomSheetContent!!()
                 }
             }
-            // screen content
-            content(
-                contentPadding,
-                showBottomSheet,
-                changeShowBottomSheet,
-                scope,
-                snackBarHostState,
-                drawerState
-            )
+            Surface(
+                modifier = modifier.padding(contentPadding),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                Column(
+                    modifier = modifier,
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    // screen content
+                    content(
+                        showBottomSheet,
+                        changeShowBottomSheet,
+                        scope,
+                        snackBarHostState,
+                        drawerState
+                    )
+                }
+            }
         }
     }
 
