@@ -1,10 +1,7 @@
 package com.example.myapplication.widgets
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,7 +24,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.SnackbarHost
@@ -35,7 +31,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -119,8 +114,8 @@ fun BasicScaffold(
     val snackBarHostState = remember {
         SnackbarHostState()
     }
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed);
-    val changeShowBottomSheet = { args: Boolean -> showBottomSheet = args };
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val changeShowBottomSheet = { args: Boolean -> showBottomSheet = args }
 
     ModalNavigationDrawer(
         drawerState = drawerState,

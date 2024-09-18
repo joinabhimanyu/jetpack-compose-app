@@ -6,4 +6,4 @@ data class UserModel(
     val title: String,
     val url: String,
     val thumbnailUrl: String,
-);
+)

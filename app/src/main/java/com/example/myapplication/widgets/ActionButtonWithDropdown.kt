@@ -31,8 +31,8 @@ fun ActionButtonWithDropdown(
     val showDropDownMenu = remember { mutableStateOf(false) }
 
     IconButton(onClick = {
-        iconButtonOnClick.invoke();
-        if (wantDropdown) showDropDownMenu.value = true;
+        iconButtonOnClick.invoke()
+        if (wantDropdown) showDropDownMenu.value = true
     }) {
         Icon(
             tint = iconTint,
@@ -44,8 +44,8 @@ fun ActionButtonWithDropdown(
         DropdownMenu(
             expanded = showDropDownMenu.value,
             onDismissRequest = {
-                onDismissRequestDropdown.invoke();
-                showDropDownMenu.value = false;
+                onDismissRequestDropdown.invoke()
+                showDropDownMenu.value = false
             }
             // offset = DpOffset((-102).dp, (-64).dp),
         ) {
@@ -56,8 +56,8 @@ fun ActionButtonWithDropdown(
                         contentDescription = dropDownOptions.contentDescription
                     )
                 }, onClick = {
-                    dropDownOptions.onClickOption.invoke();
-                    showDropDownMenu.value = false;
+                    dropDownOptions.onClickOption.invoke()
+                    showDropDownMenu.value = false
                 })
             }
         }

@@ -22,13 +22,13 @@ import androidx.compose.ui.unit.dp
 fun UserEditPage(modifier: Modifier = Modifier) {
     val firstname = remember {
         mutableStateOf("")
-    };
+    }
     val lastname = remember {
         mutableStateOf("")
-    };
+    }
     val address = remember {
         mutableStateOf("")
-    };
+    }
 
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
         Column(

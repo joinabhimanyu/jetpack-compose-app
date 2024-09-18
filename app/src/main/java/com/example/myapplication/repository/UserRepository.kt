@@ -7,19 +7,17 @@ import com.example.myapplication.service.UserApi
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
-public class UserRepository(private val userApi: UserApi) {
+class UserRepository(private val userApi: UserApi) {
     fun getUsers(
         users: MutableLiveData<List<UserModel>>,
         isLoading: MutableLiveData<Boolean>,
         isError: MutableLiveData<Boolean>,
         error: MutableLiveData<String>
     ) {
-        val call: Call<List<UserModel>?>? = userApi.getUsers();
+        val call: Call<List<UserModel>?>? = userApi.getUsers()
 
-        isLoading.value = true;
+        isLoading.value = true
         call!!.enqueue(object : Callback<List<UserModel>?> {
             override fun onResponse(
                 call: Call<List<UserModel>?>,
@@ -27,19 +25,19 @@ public class UserRepository(private val userApi: UserApi) {
             ) {
                 if (response.isSuccessful) {
                     Log.d("Main", "success!" + response.body().toString())
-                    isLoading.value = false;
-                    isError.value = false;
-                    error.value = null;
-                    users.value = response.body();
+                    isLoading.value = false
+                    isError.value = false
+                    error.value = null
+                    users.value = response.body()
                 }
             }
 
             override fun onFailure(call: Call<List<UserModel>?>, t: Throwable) {
                 Log.e("Main", "Failed mate " + t.message.toString())
-                isLoading.value = false;
-                isError.value = true;
-                error.value = t.message.toString();
-                users.value = null;
+                isLoading.value = false
+                isError.value = true
+                error.value = t.message.toString()
+                users.value = null
             }
         })
     }

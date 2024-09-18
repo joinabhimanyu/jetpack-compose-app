@@ -51,7 +51,7 @@ fun BottomSheetContent(bottomSheetOptions: List<BottomSheetOptions>) {
         verticalArrangement = Arrangement.Top
     ) {
         (items(count = bottomSheetOptions.size) { index ->
-            val option = bottomSheetOptions[index];
+            val option = bottomSheetOptions[index]
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -96,7 +96,7 @@ fun BottomSheet(
 ) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
-    val headerString = if (header.isNullOrBlank()) "Bottom Sheet Header" else header;
+    val headerString = if (header.isNullOrBlank()) "Bottom Sheet Header" else header
     ModalBottomSheet(
         onDismissRequest = {
             onChangeShowBottomSheet.invoke(false)

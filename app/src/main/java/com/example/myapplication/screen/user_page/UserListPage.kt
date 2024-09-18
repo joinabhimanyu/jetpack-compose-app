@@ -24,23 +24,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myapplication.viewModel.UserViewModel
 import com.example.myapplication.ui.theme.OffWhite
+import com.example.myapplication.viewModel.UserViewModel
 import com.example.myapplication.widgets.RowLayoutLazyColumn
 import com.example.myapplication.widgets.RowLayoutProps
 
 @Composable
 fun UsersListPage(userViewModel: UserViewModel) {
-    val users by userViewModel.users.observeAsState();
-    val isLoading by userViewModel.isLoading.observeAsState(false);
-    val isError by userViewModel.isError.observeAsState(false);
-    val error by userViewModel.error.observeAsState(null);
+    val users by userViewModel.users.observeAsState()
+    val isLoading by userViewModel.isLoading.observeAsState(false)
+    val isError by userViewModel.isError.observeAsState(false)
+    val error by userViewModel.error.observeAsState(null)
     var refreshCount by remember {
-        mutableIntStateOf(1);
+        mutableIntStateOf(1)
     }
 
     LaunchedEffect(key1 = refreshCount) {
-        userViewModel.fetchUsers();
+        userViewModel.fetchUsers()
     }
     if (isLoading) {
         Column(
@@ -75,7 +75,7 @@ fun UsersListPage(userViewModel: UserViewModel) {
     }
     LazyColumn {
         (items(count = users!!.size) { index ->
-            val user = users!![index];
+            val user = users!![index]
             RowLayoutLazyColumn(
                 rowLayoutProps = RowLayoutProps(
                     imageThumbnailUrl = user.thumbnailUrl,

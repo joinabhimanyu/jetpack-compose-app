@@ -8,12 +8,12 @@ import com.example.myapplication.model.UserModel
 import com.example.myapplication.repository.UserRepository
 import kotlinx.coroutines.launch
 
-public class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
+class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
 
-    private var _users = MutableLiveData<List<UserModel>>(emptyList());
-    private var _isLoading = MutableLiveData<Boolean>(false);
-    private var _isError = MutableLiveData<Boolean>(false);
-    private var _error = MutableLiveData<String>(null);
+    private var _users = MutableLiveData<List<UserModel>>(emptyList())
+    private var _isLoading = MutableLiveData<Boolean>(false)
+    private var _isError = MutableLiveData<Boolean>(false)
+    private var _error = MutableLiveData<String>(null)
     val users: LiveData<List<UserModel>>
         get() = _users
     val isLoading: LiveData<Boolean>
@@ -22,11 +22,13 @@ public class UserViewModel(private val userRepository: UserRepository) : ViewMod
         get() = _isError
     val error: LiveData<String>
         get() = _error
+
     init {
         viewModelScope.launch {
             userRepository.getUsers(_users, _isLoading, _isError, _error)
         }
     }
+
     fun fetchUsers() {
         viewModelScope.launch {
             userRepository.getUsers(_users, _isLoading, _isError, _error)

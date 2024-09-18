@@ -1,13 +1,5 @@
 package com.example.myapplication.screen.user_page
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Build
@@ -17,25 +9,17 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.myapplication.repository.UserRepository
 import com.example.myapplication.service.UserApi
 import com.example.myapplication.viewModel.UserViewModel
 import com.example.myapplication.widgets.AppDrawerConfig
-import com.example.myapplication.widgets.AppDrawerItem
 import com.example.myapplication.widgets.BasicScaffold
 import com.example.myapplication.widgets.BottomSheetOptions
 import com.example.myapplication.widgets.DropDownOptions
@@ -43,7 +27,7 @@ import com.example.myapplication.widgets.DropDownOptions
 @Composable
 fun UserPageScaffold(modifier: Modifier, navController: NavController) {
 
-    val bottomSheetOptions=listOf(
+    val bottomSheetOptions = listOf(
         BottomSheetOptions(
             iconTint = Color.Black,
             imageVector = Icons.Filled.Email,
@@ -86,8 +70,8 @@ fun UserPageScaffold(modifier: Modifier, navController: NavController) {
             optionText = "Send Feedback",
             onOptionClick = { /*TODO*/ }
         )
-    );
-    val dropDownOptions=listOf(
+    )
+    val dropDownOptions = listOf(
         DropDownOptions(
             "Menu 1",
             contentDescription = "Call",
@@ -108,11 +92,11 @@ fun UserPageScaffold(modifier: Modifier, navController: NavController) {
             contentDescription = "Call",
             leadingIconImageVector = Icons.Filled.Build,
             onClickOption = { /*TODO*/ }
-        ));
+        ))
 
     BasicScaffold(
         modifier = modifier,
-        navController=navController,
+        navController = navController,
         topAppBarContainerColor = MaterialTheme.colorScheme.primary,
         topAppBarTitleContentColor = MaterialTheme.colorScheme.background,
         navigationButtonIconTint = Color.White,
@@ -138,7 +122,7 @@ fun UserPageScaffold(modifier: Modifier, navController: NavController) {
             navigationHeaderTitle = "Drawer Title",
         )
     ) { showBottomSheet, changeShowBottomSheet, scope, snackBarHostState, drawerState ->
-        val userViewModel: UserViewModel= UserViewModel(UserRepository(UserApi.getInstance()))
+        val userViewModel: UserViewModel = UserViewModel(UserRepository(UserApi.getInstance()))
         UsersListPage(userViewModel)
     }
 }
